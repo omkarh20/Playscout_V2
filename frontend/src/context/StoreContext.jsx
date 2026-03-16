@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
 import { sport_list } from "../assets/assets";
 
 export const StoreContext = createContext(null);
@@ -11,6 +12,7 @@ const StoreContextProvider = (props) => {
     const [startDate, setStartDate] = useState(null);
     
     const url = import.meta.env.VITE_BACKEND_URL;
+    const storageBaseUrl = import.meta.env.VITE_SUPABASE_STORAGE_URL;
     const [token, setToken] = useState("");
     
     // Data lists
@@ -27,14 +29,30 @@ const StoreContextProvider = (props) => {
     //     }
     // }
 
-    // const fetchVenueList = async () => {
-    //     try {
-    //         const response = await axios.get(url + "/api/venue/venue-list");
-    //         setCourtList(response.data.data);
-    //     } catch (error) {
-    //         console.error("Error fetching venues:", error);
-    //     }
-    // }
+    const fetchVenueList = async () => {
+        try {
+            const response = await axios.get(url + "/api/venue/venue-list");
+            setCourtList(response.data.data || []);
+        } catch (error) {
+            console.error("Error fetching venues:", error);
+        }
+    }
+
+    const getImageUrl = (path) => {
+        if (!path) {
+            return "";
+        }
+
+        if (/^https?:\/\//i.test(path)) {
+            return path;
+        }
+
+        if (!storageBaseUrl) {
+            return path;
+        }
+
+        return `${storageBaseUrl.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+    };
 
     useEffect(() => {
         // Load token from localStorage if it exists
@@ -42,12 +60,11 @@ const StoreContextProvider = (props) => {
             setToken(localStorage.getItem("token"));
         }
         
-        // when API endpoints are ready
-        // async function loadData() {
-        //     await fetchVenueList();
-        //     await fetchGameList();
-        // }
-        // loadData();
+        async function loadData() {
+            await fetchVenueList();
+            // await fetchGameList();
+        }
+        loadData();
     }, []);
 
     const contextValue = {
@@ -63,6 +80,8 @@ const StoreContextProvider = (props) => {
         startDate,
         setStartDate,
         url,
+        storageBaseUrl,
+        getImageUrl,
         token,
         setToken,
         COURT_list,
@@ -70,7 +89,7 @@ const StoreContextProvider = (props) => {
         player_list,
         setPlayerList,
         // fetchGameList,
-        // fetchVenueList,
+        fetchVenueList,
     };
 
     return (

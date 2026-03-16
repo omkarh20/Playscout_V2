@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const Bookvenue = ({ id, className, courtName, courtLocation, courtsAvailable, price, courtImage, game_icon, sport }) => {
   const [showBooking, setShowBooking] = useState(false);
   const [showCreateGame, setShowCreateGame] = useState(false);
-  const { url } = useContext(StoreContext);
+  const { getImageUrl } = useContext(StoreContext);
 
   if (!courtName || !courtLocation || !courtImage || courtsAvailable <= 0 || price === undefined) {
     return null; 
@@ -39,7 +39,7 @@ const Bookvenue = ({ id, className, courtName, courtLocation, courtsAvailable, p
       <Link key={id} to={`/facility/${id}`} className="court-link">
         <div className="court-header">
           <img 
-            src={`${url}/images/${courtImage}${courtImage.includes('.') ? '' : '.png'}`}  
+            src={getImageUrl(courtImage)}
             alt={courtName} 
             className="court-image" 
           />
@@ -48,7 +48,7 @@ const Bookvenue = ({ id, className, courtName, courtLocation, courtsAvailable, p
         <div className="court-content">
           <div className="court-info">
             <span className="court-name">{courtName}</span><br/>
-            <img src={`${url}/images/${game_icon}${game_icon.includes('.') ? '' : '.png'}`} className="game_icon" alt={sport} /> 
+            <img src={getImageUrl(game_icon)} className="game_icon" alt={sport} /> 
             <p className="sport-name">{sport}</p>
             <p className="court-location">{courtLocation}</p>
             <p className="court-price">Price: ₹{price}/hr</p>

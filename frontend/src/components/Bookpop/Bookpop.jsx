@@ -12,7 +12,7 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
   const { courtName, courtLocation, price, game_icon, sport, courtImage } = courtDetails;
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const { url } = useContext(StoreContext);
+  const { url, getImageUrl } = useContext(StoreContext);
   const token = localStorage.getItem('token');
 
   const today = new Date();
@@ -73,7 +73,7 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
         <div className="book-popup-content">
           <div className="book-popup-info">
             <h3>{courtName}</h3>
-            <img className="game_icon" src={`${url}/images/${game_icon}${game_icon.includes('.') ? '' : '.png'}`} alt={sport} />
+            <img className="game_icon" src={getImageUrl(game_icon)} alt={sport} />
             <p className="sport-name">{sport}</p>
             <p className="court-location">{courtLocation}</p>
             <p className="court-price">Price: ₹{price}/hr</p>
