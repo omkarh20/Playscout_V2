@@ -1,0 +1,83 @@
+.meet-header {
+    padding: 50px 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.meet-title {
+  margin-bottom: 20px;
+}
+
+.meet-title h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.meet-bar {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.meet-bar button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.meet-bar img{
+  width: 20px;
+}
+.meet-bar .menu-bar-icons{
+  width: 25px;
+}
+.meet-bar span{
+  padding-left: 5px;
+  padding-top: 2px;
+}
+
+.meet-bar .location-btn-book {
+  background-color: #ffecc7;
+  border: 1px solid #cb3c0c;
+}
+
+.meet-bar .date-btn-book {
+  background-color: #f0f9ff;
+  border: 1px solid #0099cc;
+}
+
+.meet-bar .sports-btn-book {
+  background-color: #e4f7e6;
+  border: 1px solid #4caf50;
+}
+
+.meet-bar .filter-btn {
+  background-color: #fce4ec;
+  border: 1px solid #e91e63;
+}
+
+.meet-bar .create-game-btn {
+  background-color: #d1c4e9;
+  border: 1px solid #673ab7;
+  padding: 10px 30px;
+}
+
+.meet-bar button:hover {
+  background-color: #e0e0e0;
+  border-color: #bdbdbd;
+}
+.meet-line {
+  width:1000px;
+  height: 3px;
+  background-color: #333;
+}

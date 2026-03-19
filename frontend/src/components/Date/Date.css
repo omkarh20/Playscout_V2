@@ -1,0 +1,31 @@
+.calendar-wrapper {
+    position: relative;
+}
+
+.date-btn-book {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.date-btn-book img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.calendar-container {
+  position: absolute;
+  z-index: 1000;
+  top: 100%;
+  left: 0;
+  margin-top: 5px;
+}
+
+.datepicker {
+  margin: 0;
+}

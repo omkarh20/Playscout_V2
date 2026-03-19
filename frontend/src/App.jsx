@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import Book from './pages/Booking/Booking';
 import Facility from './pages/Facility/Facility';
+import Meet from './pages/Meet/Meet';
 
 const App = () => {
 
@@ -18,6 +19,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/book' element={<Book />} />
+          <Route path='/meet' element={<Meet />} />
           <Route path='/facility/:id' element={<Facility />} />
         </Routes>
         <Footer />
