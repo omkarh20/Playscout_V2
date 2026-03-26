@@ -1,7 +1,8 @@
 package com.example.backend.dto;
 
-import com.example.backend.enums.Role;
+import java.time.LocalDate;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-
-    private UUID userId;
-    private String token;
-    private Role role;
-    private String userImage;
+public class CreateBookingRequest {
+    private UUID venueId;
+    private LocalDate bookingDate;
+    private String slot;
+    private Integer totalMembers;
 }

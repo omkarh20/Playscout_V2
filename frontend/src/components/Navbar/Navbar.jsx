@@ -62,11 +62,13 @@ const Navbar = ({setShowLogin}) => {
               <Link to='/upcoming'><li><ClipboardPen style={{ color: 'red', paddingBottom: '10px', paddingRight: '6px'}} size={26} /><p style={{ paddingRight: '10px'}}>Upcoming</p></li></Link>
               <hr />
               {isAdmin ? (
+                <>
                 <Link to="/admin">
                   <li><Shield style={{ color: 'red', paddingBottom: '10px', paddingRight: '6px'}} size={26} /><p>Admin</p></li>
                 </Link>
+                <hr />
+                </>
               ) : <></>}
-              <hr />
               <li onClick={logout}><img src={assets.logout_icon} alt="" /><p style={{ paddingLeft: '5px'}}>Logout</p></li>
               <hr />
             </ul>

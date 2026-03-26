@@ -15,7 +15,6 @@ public class GameResponse {
     private UUID id;
 
     private String date;
-    private String filterDate;
     private String sportIcon;
     private String sportName;
 

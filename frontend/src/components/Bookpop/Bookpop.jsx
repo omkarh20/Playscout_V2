@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { format } from 'date-fns';
 
 const Bookpop = ({ setShowBooking, courtDetails }) => {
-  const { courtName, courtLocation, price, game_icon, sport, courtImage } = courtDetails;
+  const { id, courtName, courtLocation, price, game_icon, sport, courtImage } = courtDetails;
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const { url, getImageUrl } = useContext(StoreContext);
@@ -24,16 +24,11 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
 
   const handleConfirmBooking = async () => {
     if (selectedDate && selectedSlot) {
-      const formattedDate = format(selectedDate, 'dd-MM-yyyy');
       const bookingData = {
-        courtName,
-        courtLocation,
-        courtImage, 
-        sport,
-        membersJoined: 1, 
-        totalMembers: 1, 
-        date: formattedDate,
-        slot: selectedSlot
+        venueId: id,
+        bookingDate: format(selectedDate, 'yyyy-MM-dd'),
+        slot: selectedSlot,
+        totalMembers: 1
       };
     
       try {

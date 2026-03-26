@@ -29,13 +29,11 @@ const CreateGame = ({ setShowCreateGame, courtDetails }) => {
   const handleCreateGame = async () => {
     if (selectedDate && selectedSlot && totalMembers && availableMembers) {
       const formattedDate = `${format(selectedDate, 'dd MMM, yyyy')} ${selectedSlot}`;
-      const filterDate = format(selectedDate, 'MM/dd/yyyy');
       const sportIcon = `${sport.replace(/\s+/g, '').toLowerCase()}_icon`;
       const userImage = localStorage.getItem('userImage');
       
       const gameData = {
         date: formattedDate,
-        filterDate,
         sportIcon,
         sportName: sport,
         userImage,

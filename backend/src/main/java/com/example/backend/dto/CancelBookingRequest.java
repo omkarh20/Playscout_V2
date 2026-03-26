@@ -1,6 +1,5 @@
 package com.example.backend.dto;
 
-import com.example.backend.enums.Role;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-
-    private UUID userId;
-    private String token;
-    private Role role;
-    private String userImage;
+public class CancelBookingRequest {
+    private UUID id;
 }

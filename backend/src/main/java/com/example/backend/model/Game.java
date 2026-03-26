@@ -4,9 +4,12 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,17 +32,15 @@ public class Game {
     @Column(name = "date", nullable = false)
     private String date;
 
-    @Column(name = "filter_date", nullable = false)
-    private String filterDate;
-
     @Column(name = "sport_icon")
     private String sportIcon;
 
     @Column(name = "sport_name")
     private String sportName;
 
-    @Column(name = "user_id")
-    private UUID createdBy;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User createdBy;
     
     @Column(name = "members_joined")
     private Integer membersJoined;

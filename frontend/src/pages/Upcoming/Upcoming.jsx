@@ -85,7 +85,11 @@ const Upcoming = () => {
 
   const cancelBooking = async (bookId) => {
     try {
-      const response = await axios.post(`${url}/api/bookings/cancel-booking`, { id: bookId });
+      const response = await axios.post(
+        `${url}/api/bookings/cancel-booking`,
+        { id: bookId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       if (response?.data?.success) {
         toast.success(response.data.message);
         fetchBookings();
@@ -148,7 +152,7 @@ const Upcoming = () => {
                   <td>{booking.courtName}</td>
                   <td>{booking.courtLocation}</td>
                   <td>{booking.sport}</td>
-                  <td>{(booking.date || '').split('T')[0] || booking.date}</td>
+                  <td>{booking.bookingDate}</td>
                   <td>{booking.slot}</td>
                   <td className='small-column'>{booking.membersJoined}</td>
                   <td className='small-column'>{booking.totalMembers}</td>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import JoinPopup from '../JoinPopup/JoinPopup';
 import ChatPopup from '../ChatPopup/ChatPopup';
 
-const PlayObject = ({ id, className,date, filterDate, sportIcon, sportName, userImage, userName, userID,membersJoined, totalMembers, level, courtName, location }) => {
+const PlayObject = ({ id, className,date, sportIcon, sportName, userImage, userName, userID,membersJoined, totalMembers, level, courtName, location }) => {
   const {url, getImageUrl} = useContext(StoreContext);
   const [showJoinPopup, setShowJoinPopup] = useState(false);
   const [showChatPopup, setShowChatPopup] = useState(false);

@@ -4,7 +4,7 @@ import com.example.backend.dto.AuthResponse;
 import com.example.backend.dto.LoginRequest;
 import com.example.backend.dto.RegisterRequest;
 import com.example.backend.exception.AuthException;
-import com.example.backend.model.Role;
+import com.example.backend.enums.Role;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.security.JwtUtil;
