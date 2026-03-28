@@ -13,7 +13,7 @@ const JoinPopup = ({ setShowJoinPopup, recipientId, gameId }) => {
     try {
       const response = await axios.post(
         `${url}/api/join-requests`, 
-        { recipientId, gameId}, 
+        { gameId}, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -24,7 +24,14 @@ const JoinPopup = ({ setShowJoinPopup, recipientId, gameId }) => {
       }
     } catch (error) {
       console.error("Error sending join request:", error);
-      toast.error("Failed to send join request.");
+      const serverMessage = error?.response?.data?.message;
+
+      if (serverMessage) {
+        toast.error(serverMessage);
+      }
+      else {
+        toast.error("Failed to send join request. Please try again.");
+      }
     }
 
     setShowJoinPopup(false);
