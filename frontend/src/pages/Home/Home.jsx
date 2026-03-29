@@ -1,5 +1,9 @@
-import React, {useEffect} from "react";
-import "./Home.css";
+import React, { useEffect } from 'react';
+import './Home.css';
+import Header from '../../components/Header/Header';
+import ExploreSports from '../../components/ExploreSports/ExploreSports';
+import ExplorePlayers from '../../components/ExplorePlayers/ExplorePlayers';
+import ExploreVenues from '../../components/ExploreVenues/ExploreVenues';
 
 const Home = () => {
 
@@ -9,8 +13,12 @@ const Home = () => {
 
   return (
     <div className='home'>
+      <Header />
+      <ExploreSports />
+      <ExplorePlayers />
+      <ExploreVenues />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

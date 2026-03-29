@@ -1,0 +1,131 @@
+.header-card{
+  padding: 0px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin: 0px auto;
+  overflow: hidden;
+}
+
+.header {
+  margin: 30px 20px 20px;
+  height: 30vw;
+  display: flex;
+  gap: 0;
+}
+
+.header-contents-left,
+.header-contents-right {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  transition: background-image 0.2s ease-in-out;
+  position: relative;
+}
+
+.header-contents-left h1,
+.header-contents-left h3,
+.header-contents-left p{
+  color: white;
+  position: absolute;
+  left: 3vw;
+  animation: fadeIn 1.5s;
+  font-weight: 350;
+}
+
+.header-contents-left h1 {
+  bottom: 28%;
+  font-weight: 500;
+}
+
+.header-contents-left h3 {
+  bottom: 20%;
+  font-weight: 500;
+}
+
+.header-contents-left p {
+  bottom: 7%;
+  font-size: 90%;
+}
+
+@media (min-width: 1800px){
+  .header-card{
+    height: 36vw;
+  }
+  .header{
+    padding-top: 20px;
+  }
+  .header-contents-left{
+    max-width: 55%;
+  }
+  .header-contents-right{
+    max-width: 55%;
+  }
+  .header-contents-left h1{
+    bottom: 30%;
+    font-size: 45px;
+  }
+  .header-contents-left h3{
+    bottom: 23%;
+    font-size: 30px;
+  }
+  .header-contents-left p{
+    bottom: 8%;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 1150px){
+  .header-card{
+    height: 38vw;
+  }
+  .header{
+    padding-top: 0px;
+  }
+  .header-contents-left{
+    max-width: 55%;
+  }
+  .header-contents-right{
+    max-width: 55%;
+  }
+  .header-contents-left h1{
+    bottom: 28%;
+    font-size: 25px;
+  }
+  .header-contents-left h3{
+    bottom: 20%;
+    font-size: 15px;
+  }
+  .header-contents-left p{
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 850px){
+  .header-card{
+    height: 38vw;
+  }
+  .header{
+    padding-top: 30px;
+  }
+  .header-contents-left{
+    max-width: 55%;
+  }
+  .header-contents-right{
+    max-width: 55%;
+  }
+  .header-contents-left h1{
+    bottom: 24%;
+    font-size: 25px;
+  }
+  .header-contents-left h3{
+    bottom: 4%;
+    font-size: 15px;
+  }
+  .header-contents-left p{
+    display: none;
+  }
+}

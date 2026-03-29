@@ -25,7 +25,7 @@ const App = () => {
     <>
       {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
       <div className='app' style={{backgroundColor:'#f1f1f1'}}>
-        <ToastContainer />
+        <ToastContainer position='top-right' style={{ top: '90px', right: '16px' }} />
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path='/' element={<Home />} />

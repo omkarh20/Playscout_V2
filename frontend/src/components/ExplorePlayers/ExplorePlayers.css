@@ -1,0 +1,87 @@
+.explore-players-card {
+    padding: 10px;
+    width: 90%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin: 50px auto;
+    overflow: hidden;
+}
+
+.explore-players {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.explore-players h1 {
+    color: rgb(226, 14, 59);
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.explore-players-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+}
+
+.explore-players-list {
+    display: flex;
+    gap: 30px;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+
+.explore-players-list::-webkit-scrollbar{
+    display: none;
+}
+
+.explore-players-list-item {
+    width: 250px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.explore-players-list-item img {
+    width: 100%;
+    height: 150px;
+    border-radius: 25px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.explore-players-list-item img:hover{
+    transform: scale(0.95);
+}
+
+.explore-players-list-item p {
+    position: absolute;
+    bottom: 5px;
+    left: 80px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0;
+}
+
+.scroll-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.left-icon {
+    left: 0;
+}
+
+.right-icon {
+    right: 0;
+}

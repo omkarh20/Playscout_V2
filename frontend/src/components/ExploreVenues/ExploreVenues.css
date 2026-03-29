@@ -1,0 +1,66 @@
+.explore-venues-card {
+    padding: 10px;
+    width: 90%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin: 50px auto;
+    overflow: hidden;
+}
+
+.explore-venues {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.explore-venues h1 {
+    color: rgb(226, 14, 59);
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.explore-venues-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+}
+
+.explore-venues-list {
+    display: flex;
+    gap: 30px;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+
+.explore-venues-list::-webkit-scrollbar{
+    display: none;
+}
+
+.explore-venues-list-item {
+    width: 350px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.court-component {
+    padding: 0px;
+}
+
+.scroll-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.left-icon {
+    left: 0;
+}
+
+.right-icon {
+    right: 0;
+}
