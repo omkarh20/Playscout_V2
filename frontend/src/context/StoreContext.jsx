@@ -27,6 +27,8 @@ const StoreContextProvider = (props) => {
     // Data lists
     const [COURT_list, setCourtList] = useState([]);
     const [player_list, setPlayerList] = useState([]);
+    const [incomingJoinRequests, setIncomingJoinRequests] = useState([]);
+    const [sentJoinRequests, setSentJoinRequests] = useState([]);
 
     const fetchGameList = async () => {
         try {
@@ -45,6 +47,59 @@ const StoreContextProvider = (props) => {
             console.error("Error fetching venues:", error);
         }
     }
+
+    const buildAuthHeaders = () => ({
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const fetchIncomingJoinRequests = async (status = "") => {
+        if (!token) {
+            setIncomingJoinRequests([]);
+            return [];
+        }
+
+        try {
+            const endpoint = status ? `${url}/api/join-requests/incoming?status=${status}` : `${url}/api/join-requests/incoming`;
+            const response = await axios.get(endpoint, buildAuthHeaders());
+            const data = response?.data?.data || [];
+            setIncomingJoinRequests(data);
+            return data;
+        } catch (error) {
+            console.error("Error fetching incoming join requests:", error);
+            setIncomingJoinRequests([]);
+            return [];
+        }
+    };
+
+    const fetchSentJoinRequests = async () => {
+        if (!token) {
+            setSentJoinRequests([]);
+            return [];
+        }
+
+        try {
+            const response = await axios.get(`${url}/api/join-requests/sent`, buildAuthHeaders());
+            const data = response?.data?.data || [];
+            setSentJoinRequests(data);
+            return data;
+        } catch (error) {
+            console.error("Error fetching sent join requests:", error);
+            setSentJoinRequests([]);
+            return [];
+        }
+    };
+
+    const acceptJoinRequest = async (requestId) => {
+        return axios.patch(`${url}/api/join-requests/${requestId}/accept`, {}, buildAuthHeaders());
+    };
+
+    const rejectJoinRequest = async (requestId) => {
+        return axios.patch(`${url}/api/join-requests/${requestId}/reject`, {}, buildAuthHeaders());
+    };
+
+    const cancelSentJoinRequest = async (requestId) => {
+        return axios.delete(`${url}/api/join-requests/${requestId}`, buildAuthHeaders());
+    };
 
     const getImageUrl = (path) => {
         if (!path) {
@@ -97,8 +152,17 @@ const StoreContextProvider = (props) => {
         setCourtList,
         player_list,
         setPlayerList,
+        incomingJoinRequests,
+        setIncomingJoinRequests,
+        sentJoinRequests,
+        setSentJoinRequests,
         fetchGameList,
         fetchVenueList,
+        fetchIncomingJoinRequests,
+        fetchSentJoinRequests,
+        acceptJoinRequest,
+        rejectJoinRequest,
+        cancelSentJoinRequest,
     };
 
     return (

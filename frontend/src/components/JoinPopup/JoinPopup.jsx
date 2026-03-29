@@ -6,8 +6,7 @@ import { StoreContext } from '../../context/storeContextInstance';
 import { toast } from 'react-toastify';
 
 const JoinPopup = ({ setShowJoinPopup, recipientId, gameId }) => {
-  const { url } = useContext(StoreContext);
-  const token = localStorage.getItem('token');
+  const { url, token, fetchSentJoinRequests } = useContext(StoreContext);
 
   const handleConfirmJoin = async () => {
     try {
@@ -19,6 +18,7 @@ const JoinPopup = ({ setShowJoinPopup, recipientId, gameId }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        await fetchSentJoinRequests();
       } else {
         toast.error(response.data.message);
       }

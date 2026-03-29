@@ -1,5 +1,6 @@
 package com.example.backend.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -31,6 +32,20 @@ public class JoinRequestResponse {
 
     @JsonProperty("recipientID")
     private UUID recipientId;
+
+    private String recipientName;
+    private String recipientEmail;
+    private String recipientImage;
+
+    private LocalDate gameDate;
+    private String gameSlot;
+    private String sportName;
+    private String sportIcon;
+    private String courtName;
+    private String location;
+    private Integer membersJoined;
+    private Integer totalMembers;
+    private String level;
 
     private JoinRequestStatus status;
     private LocalDateTime createdAt;

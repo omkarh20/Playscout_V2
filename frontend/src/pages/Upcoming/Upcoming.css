@@ -87,6 +87,110 @@
   padding-right: 22px;
 }
 
+.planned-subsection {
+  margin-top: 16px;
+}
+
+.planned-subsection h4 {
+  color: #444;
+  margin: 10px 0;
+  border-bottom: 2px solid #e20e3b;
+  display: inline-block;
+}
+
+.request-toggle-btn {
+  border: none;
+  background: #e20e3b;
+  color: #fff;
+  border-radius: 16px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.request-toggle-btn:hover {
+  background: #b90d31;
+}
+
+.members-joined-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.show-members-btn {
+  border: 1px solid #e20e3b;
+  background: transparent;
+  color: #e20e3b;
+  border-radius: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.show-members-btn:hover {
+  background: #fdecef;
+}
+
+.request-action-btn {
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin: 0 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.request-action-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.request-action-btn.accept {
+  background: #1a9b39;
+}
+
+.request-action-btn.reject {
+  background: #b90d31;
+}
+
+.request-status {
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.request-status.pending {
+  background: #fff5e7;
+  color: #b97100;
+}
+
+.request-status.accepted {
+  background: #eaf7ef;
+  color: #1a9b39;
+}
+
+.request-status.rejected {
+  background: #fdecef;
+  color: #b90d31;
+}
+
+.muted-text {
+  color: #777;
+  font-size: 13px;
+}
+
+.pre-added-summary {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+}
+
 .no-data-message {
   text-align: center;
   color: #666;
