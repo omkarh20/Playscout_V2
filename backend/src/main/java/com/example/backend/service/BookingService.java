@@ -55,13 +55,14 @@ public class BookingService {
 
         ensureNoSlotConflict(venue.getId(), request.getBookingDate(), startTime, endTime);
 
-        Booking booking = new Booking();
-        booking.setUser(user);
-        booking.setVenue(venue);
-        booking.setBookingDate(request.getBookingDate());
-        booking.setStartTime(startTime);
-        booking.setEndTime(endTime);
-        booking.setStatus(BookingStatus.PENDING);
+        Booking booking = Booking.builder()
+            .user(user)
+            .venue(venue)
+            .bookingDate(request.getBookingDate())
+            .startTime(startTime)
+            .endTime(endTime)
+            .status(BookingStatus.PENDING)
+            .build();
 
         Booking saved = bookingRepository.save(booking);
         return toResponse(saved);

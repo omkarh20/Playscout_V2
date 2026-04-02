@@ -72,4 +72,79 @@ public class Booking {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public static BookingBuilder builder() {
+        return new BookingBuilder();
+    }
+
+    public static class BookingBuilder {
+        private UUID id;
+        private User user;
+        private Venue venue;
+        private LocalDate bookingDate;
+        private LocalTime startTime;
+        private LocalTime endTime;
+        private BookingStatus status = BookingStatus.PENDING;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+        public BookingBuilder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public BookingBuilder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public BookingBuilder venue(Venue venue) {
+            this.venue = venue;
+            return this;
+        }
+
+        public BookingBuilder bookingDate(LocalDate bookingDate) {
+            this.bookingDate = bookingDate;
+            return this;
+        }
+
+        public BookingBuilder startTime(LocalTime startTime) {
+            this.startTime = startTime;
+            return this;
+        }
+
+        public BookingBuilder endTime(LocalTime endTime) {
+            this.endTime = endTime;
+            return this;
+        }
+
+        public BookingBuilder status(BookingStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public BookingBuilder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public BookingBuilder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Booking build() {
+            Booking booking = new Booking();
+            booking.id = this.id;
+            booking.user = this.user;
+            booking.venue = this.venue;
+            booking.bookingDate = this.bookingDate;
+            booking.startTime = this.startTime;
+            booking.endTime = this.endTime;
+            booking.status = this.status;
+            booking.createdAt = this.createdAt;
+            booking.updatedAt = this.updatedAt;
+            return booking;
+        }
+    }
 }
