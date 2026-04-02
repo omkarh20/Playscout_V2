@@ -17,6 +17,11 @@ import com.example.backend.model.User;
 import com.example.backend.repository.GameRepository;
 import com.example.backend.repository.JoinRequestRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.util.JoinRequestValidators;
+import com.example.backend.util.JoinRequestValidators.GameNotFullValidator;
+import com.example.backend.util.JoinRequestValidators.SenderNotCreatorValidator;
+import com.example.backend.util.JoinRequestValidators.NoPendingRequestValidator;
+import com.example.backend.util.JoinRequestValidators.NotAlreadyAcceptedValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,31 +45,24 @@ public class JoinRequestService {
         Game game = gameRepository.findById(request.getGameId())
                 .orElseThrow(() -> new IllegalArgumentException("Game not found"));
 
-        if (game.getMembersJoined() >= game.getTotalMembers()) {
-            throw new IllegalArgumentException("Game is already full");
-        }
-
-        if (game.getCreatedBy().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("You cannot join your own game");
-        }
-
         boolean pendingRequestExists = joinRequestRepository.existsBySenderId_IdAndGameId_IdAndStatus(
                         user.getId(),
                         game.getId(),
                         JoinRequestStatus.PENDING);
-
-        if (pendingRequestExists) {
-            throw new IllegalArgumentException("Pending join request already exists for this game");
-        }
 
         boolean acceptedRequestExists = joinRequestRepository.existsBySenderId_IdAndGameId_IdAndStatus(
                         user.getId(),
                         game.getId(),
                         JoinRequestStatus.ACCEPTED);
 
-        if (acceptedRequestExists) {
-            throw new IllegalArgumentException("You are already accepted for this game");
-        }
+        // Build validator chain
+        JoinRequestValidators validatorChain = new GameNotFullValidator();
+        validatorChain.setNext(new SenderNotCreatorValidator())
+                .setNext(new NoPendingRequestValidator())
+                .setNext(new NotAlreadyAcceptedValidator());
+
+        // Execute chain validation
+        validatorChain.validate(user, game, pendingRequestExists, acceptedRequestExists);
 
         JoinRequest joinRequest = new JoinRequest();
         joinRequest.setSenderId(user);
