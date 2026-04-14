@@ -9,6 +9,16 @@ const JoinPopup = ({ setShowJoinPopup, recipientId, gameId }) => {
   const { url, token, fetchSentJoinRequests } = useContext(StoreContext);
 
   const handleConfirmJoin = async () => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token || !userId) {
+      toast.error('Please log in to send a join request');
+      setShowJoinPopup(false);
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${url}/api/join-requests`, 

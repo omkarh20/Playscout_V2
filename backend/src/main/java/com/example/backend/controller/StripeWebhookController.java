@@ -56,29 +56,15 @@ public class StripeWebhookController {
                     if (paymentRecord != null) {
                         bookingRequest.setUserId(paymentRecord.getUserId() != null ? paymentRecord.getUserId().toString() : null);
                         bookingRequest.setVenueId(paymentRecord.getVenueId() != null ? paymentRecord.getVenueId().toString() : null);
-                        bookingRequest.setCourtName(paymentRecord.getCourtName());
-                        bookingRequest.setCourtLocation(paymentRecord.getCourtLocation());
-                        bookingRequest.setSport(paymentRecord.getSport());
-                        bookingRequest.setCourtImage(paymentRecord.getCourtImage());
-                        bookingRequest.setPrice(paymentRecord.getAmount().intValue());
                         bookingRequest.setBookingDate(paymentRecord.getBookingDate());
                         bookingRequest.setBookingSlot(paymentRecord.getBookingSlot());
-                        bookingRequest.setMembersJoined(paymentRecord.getMembersJoined());
-                        bookingRequest.setTotalMembers(paymentRecord.getTotalMembers());
                         bookingRequest.setOrderId(paymentRecord.getOrderId());
                         bookingRequest.setPaymentIntentId(paymentRecord.getPaymentIntentId());
                     } else {
                         bookingRequest.setUserId(session.getMetadata().get("userId"));
                         bookingRequest.setVenueId(session.getMetadata().get("venueId"));
-                        bookingRequest.setCourtName(session.getMetadata().get("courtName"));
-                        bookingRequest.setCourtLocation(session.getMetadata().get("courtLocation"));
-                        bookingRequest.setSport(session.getMetadata().get("sport"));
-                        bookingRequest.setCourtImage(session.getMetadata().get("courtImage"));
-                        bookingRequest.setPrice(Integer.valueOf(session.getMetadata().getOrDefault("price", "0")));
                         bookingRequest.setBookingDate(session.getMetadata().get("bookingDate"));
                         bookingRequest.setBookingSlot(session.getMetadata().get("bookingSlot"));
-                        bookingRequest.setMembersJoined(Integer.valueOf(session.getMetadata().getOrDefault("membersJoined", "1")));
-                        bookingRequest.setTotalMembers(Integer.valueOf(session.getMetadata().getOrDefault("totalMembers", "1")));
                         bookingRequest.setOrderId(session.getMetadata().get("orderId"));
                         bookingRequest.setPaymentIntentId(session.getPaymentIntent());
                     }

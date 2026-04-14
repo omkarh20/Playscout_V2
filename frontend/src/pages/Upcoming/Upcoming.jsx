@@ -307,8 +307,6 @@ const Upcoming = () => {
               <th>Sport</th>
               <th>Date</th>
               <th>Slot</th>
-              <th className='small-column'>Members Joined</th>
-              <th className='small-column'>Total Members</th>
               <th className='small-column'>Status</th>
               <th className='small-column'>Refund</th>
               <th className='small-column'>Payment</th>
@@ -327,8 +325,6 @@ const Upcoming = () => {
                   <td>{booking.sport}</td>
                   <td>{(booking.bookingDate || '').split('T')[0] || booking.bookingDate}</td>
                   <td>{booking.bookingSlot || booking.slot}</td>
-                  <td className='small-column'>{booking.membersJoined}</td>
-                  <td className='small-column'>{booking.totalMembers}</td>
                   <td className='small-column'>
                     {booking.status === 'CONFIRMED' ? 'BOOKED' : booking.status}
                   </td>
@@ -356,7 +352,7 @@ const Upcoming = () => {
               ))
             ) : (
               <tr>
-                <td colSpan='12'>No upcoming bookings</td>
+                <td colSpan='10'>No upcoming bookings</td>
               </tr>
             )}
           </tbody>

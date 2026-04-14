@@ -184,14 +184,16 @@ public class AdminService {
         AdminRefundRequestResponse response = new AdminRefundRequestResponse();
         response.setBookingId(booking.getId());
         response.setUserId(booking.getUserId());
-        response.setCourtName(booking.getCourtName());
-        response.setCourtLocation(booking.getCourtLocation());
-        response.setSport(booking.getSport());
         response.setBookingDate(booking.getBookingDate());
         response.setBookingSlot(booking.getBookingSlot());
-        response.setPrice(booking.getPrice());
         response.setRefundStatus(booking.getRefundStatus());
         response.setRefundRequestedAt(booking.getRefundRequestedAt());
+        venueRepository.findById(booking.getVenueId()).ifPresent(venue -> {
+            response.setCourtName(venue.getCourtName());
+            response.setCourtLocation(venue.getCourtLocation());
+            response.setSport(venue.getSport());
+            response.setPrice(venue.getPrice());
+        });
         Optional<User> userOpt = userRepository.findById(booking.getUserId());
         userOpt.ifPresent(user -> response.setUserEmail(user.getEmail()));
         return response;

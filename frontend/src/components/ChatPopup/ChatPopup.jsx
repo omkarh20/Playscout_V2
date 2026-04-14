@@ -1,11 +1,22 @@
 import './ChatPopup.css';
 import { assets } from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ChatPopup = ({ setShowChatPopup, recipientId, recipientName, userImage }) => {
   const navigate = useNavigate();
 
   const handleConfirmChat = () => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token || !userId) {
+      toast.error('Please log in to start a chat');
+      setShowChatPopup(false);
+      return;
+    }
+
     setShowChatPopup(false);
     navigate('/chat', { state: { recipientId, recipientName, userImage } });
   };

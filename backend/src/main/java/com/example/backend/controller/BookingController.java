@@ -1,6 +1,9 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.BookingRequest;
+import com.example.backend.factory.VenueActionFactory;
+import com.example.backend.factory.VenueActionHandler;
+import com.example.backend.factory.VenueActionType;
 import com.example.backend.model.Booking;
 import com.example.backend.service.BookingService;
 import jakarta.validation.Valid;
@@ -15,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final VenueActionFactory venueActionFactory;
 
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService, VenueActionFactory venueActionFactory) {
         this.bookingService = bookingService;
+        this.venueActionFactory = venueActionFactory;
     }
 
     @PostMapping("/add-booking")
@@ -25,10 +30,16 @@ public class BookingController {
         Authentication authentication,
         @Valid @RequestBody BookingRequest request
     ) {
-        String resolverUserId = authentication != null ? authentication.getName() : request.getUserId();
-
-        request.setUserId(resolverUserId);
-        Booking booking = bookingService.createBooking(request);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body(Map.of(
+                "success", false,
+                "message", "User is not logged in"
+            ));
+        }
+        String actor = authentication.getName();
+        VenueActionHandler<BookingRequest, Booking> bookingHandler =
+            venueActionFactory.getHandler(VenueActionType.BOOK, BookingRequest.class);
+        Booking booking = bookingHandler.execute(actor, request);
 
         return ResponseEntity.ok(Map.of(
             "success", true,

@@ -19,22 +19,4 @@ public class CreateGameRequest {
     private Integer totalMembers;
     private Integer membersJoined;
     private String skillLevel;
-
-    public UUID getVenueId() { return venueId; }
-    public void setVenueId(UUID venueId) { this.venueId = venueId; }
-
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
-
-    public String getSlot() { return slot; }
-    public void setSlot(String slot) { this.slot = slot; }
-
-    public Integer getTotalMembers() { return totalMembers; }
-    public void setTotalMembers(Integer totalMembers) { this.totalMembers = totalMembers; }
-
-    public Integer getMembersJoined() { return membersJoined; }
-    public void setMembersJoined(Integer membersJoined) { this.membersJoined = membersJoined; }
-
-    public String getSkillLevel() { return skillLevel; }
-    public void setSkillLevel(String skillLevel) { this.skillLevel = skillLevel; }
 }

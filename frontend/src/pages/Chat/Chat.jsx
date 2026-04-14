@@ -8,16 +8,25 @@ import SockJS from 'sockjs-client/dist/sockjs';
 import { useLocation } from 'react-router-dom';
 
 const Chat = () => {
-  const { url, token, userId: currentUserId, getImageUrl } = useContext(StoreContext);
+  const { url, token, role, userId: currentUserId, getImageUrl } = useContext(StoreContext);
   const location = useLocation();
   const { recipientId, recipientName, userImage } = location.state || {};
   const stompClientRef = useRef(null);
+  const deniedToastShownRef = useRef(false);
 
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef(null);
+  const canAccessChat = role === 'PLAYER';
+
+  useEffect(() => {
+    if (token && !canAccessChat && !deniedToastShownRef.current) {
+      toast.error('Access denied');
+      deniedToastShownRef.current = true;
+    }
+  }, [token, canAccessChat]);
 
   const getAvatarUrl = (imagePath) => {
     const resolvedPath = imagePath?.trim() ? imagePath : 'avatars/m_avatar2.png';
@@ -36,7 +45,7 @@ const Chat = () => {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      if (!token) return;
+      if (!token || !canAccessChat) return;
       try {
         const res = await axios.get(`${url}/api/messages`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -82,15 +91,19 @@ const Chat = () => {
           setSelectedUser(uniqueUsers[0]);
         }
       } catch (err) {
-        toast.error("Failed to load messages");
+        if (err?.response?.status === 403) {
+          toast.error('Access denied');
+        } else {
+          toast.error('Failed to load messages');
+        }
       }
     };
 
     fetchInitialData();
-  }, [url, token, currentUserId, recipientId]);
+  }, [url, token, currentUserId, recipientId, canAccessChat]);
 
   useEffect(() => {
-    if (!token || !currentUserId) {
+    if (!token || !currentUserId || !canAccessChat) {
       return undefined;
     }
 
@@ -129,9 +142,14 @@ const Chat = () => {
       stompClient.deactivate();
       stompClientRef.current = null;
     };
-  }, [url, token, currentUserId]);
+  }, [url, token, currentUserId, canAccessChat]);
 
   const handleSendMessage = async () => {
+    if (!canAccessChat) {
+      toast.error('Access denied');
+      return;
+    }
+
     if (!inputText.trim() || !selectedUser || !token) return;
 
     const payload = {
@@ -185,7 +203,11 @@ const Chat = () => {
       </div>
 
       <div className="chat-main">
-        {selectedUser ? (
+        {!canAccessChat ? (
+          <div className="no-chat-selected">
+            <h2>Access denied</h2>
+          </div>
+        ) : selectedUser ? (
           <>
             <div className="chat-header">
               <img

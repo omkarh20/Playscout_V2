@@ -11,9 +11,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "payments")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -71,58 +79,4 @@ public class PaymentRecord {
 
     @Column(nullable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();
-
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
-
-    public String getOrderId() { return orderId; }
-    public void setOrderId(String orderId) { this.orderId = orderId; }
-
-    public String getCheckoutSessionId() { return checkoutSessionId; }
-    public void setCheckoutSessionId(String checkoutSessionId) { this.checkoutSessionId = checkoutSessionId; }
-
-    public String getPaymentIntentId() { return paymentIntentId; }
-    public void setPaymentIntentId(String paymentIntentId) { this.paymentIntentId = paymentIntentId; }
-
-    public Long getAmount() { return amount; }
-    public void setAmount(Long amount) { this.amount = amount; }
-
-    public String getCurrency() { return currency; }
-    public void setCurrency(String currency) { this.currency = currency; }
-
-    public UUID getVenueId() { return venueId; }
-    public void setVenueId(UUID venueId) { this.venueId = venueId; }
-
-    public UUID getUserId() { return userId; }
-    public void setUserId(UUID userId) { this.userId = userId; }
-
-    public String getCourtName() { return courtName; }
-    public void setCourtName(String courtName) { this.courtName = courtName; }
-
-    public String getCourtLocation() { return courtLocation; }
-    public void setCourtLocation(String courtLocation) { this.courtLocation = courtLocation; }
-
-    public String getCourtImage() { return courtImage; }
-    public void setCourtImage(String courtImage) { this.courtImage = courtImage; }
-
-    public String getSport() { return sport; }
-    public void setSport(String sport) { this.sport = sport; }
-
-    public String getBookingDate() { return bookingDate; }
-    public void setBookingDate(String bookingDate) { this.bookingDate = bookingDate; }
-
-    public String getBookingSlot() { return bookingSlot; }
-    public void setBookingSlot(String bookingSlot) { this.bookingSlot = bookingSlot; }
-
-    public Integer getMembersJoined() { return membersJoined; }
-    public void setMembersJoined(Integer membersJoined) { this.membersJoined = membersJoined; }
-
-    public Integer getTotalMembers() { return totalMembers; }
-    public void setTotalMembers(Integer totalMembers) { this.totalMembers = totalMembers; }
-
-    public PaymentStatus getStatus() { return status; }
-    public void setStatus(PaymentStatus status) { this.status = status; }
-
-    public OffsetDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
 }

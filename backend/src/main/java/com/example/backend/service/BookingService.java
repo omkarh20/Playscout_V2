@@ -1,11 +1,14 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.BookingRequest;
+import com.example.backend.dto.BookingResponse;
 import com.example.backend.enums.BookingStatus;
 import com.example.backend.enums.RefundStatus;
 import com.example.backend.model.Booking;
+import com.example.backend.model.Venue;
 import com.example.backend.repository.BookingRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.VenueRepository;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,10 +24,16 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final VenueRepository venueRepository;
 
-    public BookingService(BookingRepository bookingRepository, UserRepository userRepository) {
+    public BookingService(
+        BookingRepository bookingRepository,
+        UserRepository userRepository,
+        VenueRepository venueRepository
+    ) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
+        this.venueRepository = venueRepository;
     }
 
     @Transactional
@@ -84,12 +93,15 @@ public class BookingService {
             });
     }
 
-    public List<Booking> listByUser(String userId) {
+    public List<BookingResponse> listByUser(String userId) {
         UUID resolvedUserId = resolveUserId(userId);
         if (resolvedUserId == null) {
             return List.of();
         }
-        return bookingRepository.findByUserIdAndStatusNot(resolvedUserId, BookingStatus.CANCELLED);
+        return bookingRepository.findByUserIdAndStatusNot(resolvedUserId, BookingStatus.CANCELLED)
+            .stream()
+            .map(this::toBookingResponse)
+            .toList();
     }
 
     @Transactional
@@ -125,24 +137,37 @@ public class BookingService {
         if (userId == null || venueId == null) {
             throw new IllegalArgumentException("Invalid user or venue id");
         }
+        Venue venue = venueRepository.findById(venueId)
+            .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
         Booking booking = new Booking();
         booking.setUserId(userId);
-        booking.setVenueId(venueId);
-        booking.setCourtName(request.getCourtName());
-        booking.setCourtLocation(request.getCourtLocation());
-        booking.setSport(request.getSport());
-        booking.setCourtImage(request.getCourtImage());
-        booking.setPrice(request.getPrice());
+        booking.setVenueId(venue.getId());
         booking.setBookingDate(request.getBookingDate());
         booking.setBookingSlot(request.getBookingSlot());
         LocalTime[] slotTimes = parseSlotTimes(request.getBookingSlot());
         booking.setStartTime(slotTimes[0]);
         booking.setEndTime(slotTimes[1]);
-        booking.setMembersJoined(request.getMembersJoined());
-        booking.setTotalMembers(request.getTotalMembers());
         booking.setOrderId(request.getOrderId());
         booking.setPaymentIntentId(request.getPaymentIntentId());
         return booking;
+    }
+
+    private BookingResponse toBookingResponse(Booking booking) {
+        Venue venue = venueRepository.findById(booking.getVenueId()).orElse(null);
+        return new BookingResponse(
+            booking.getId(),
+            booking.getUserId(),
+            booking.getVenueId(),
+            venue != null ? venue.getCourtName() : null,
+            venue != null ? venue.getCourtLocation() : null,
+            venue != null ? venue.getCourtImage() : null,
+            venue != null ? venue.getSport() : null,
+            booking.getBookingDate(),
+            booking.getBookingSlot(),
+            booking.getStatus(),
+            booking.getRefundStatus(),
+            booking.getCreatedAt()
+        );
     }
 
     private LocalTime[] parseSlotTimes(String bookingSlot) {

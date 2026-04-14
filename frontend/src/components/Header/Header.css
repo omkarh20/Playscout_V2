@@ -1,131 +1,215 @@
-.header-card{
-  padding: 0px;
-  width: 100%;
+/* ─────────────────────────────────────────
+   HEADER CARD
+───────────────────────────────────────── */
+.header-card {
+
+  width: 97%;
   border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  margin: 0px auto;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  background: #0d0d0d;
+  margin: 0 auto;
+  margin-top: 10px;
 }
 
 .header {
-  margin: 30px 20px 20px;
-  height: 30vw;
   display: flex;
-  gap: 0;
+  height: 26vw;
+  min-height: 280px;
+  max-height: 560px;
 }
 
-.header-contents-left,
-.header-contents-right {
+/* ─────────────────────────────────────────
+   PANELS
+───────────────────────────────────────── */
+.panel {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.panel-left  { flex: 1.1; }
+.panel-right { flex: 0.9; }
+
+/* ─────────────────────────────────────────
+   SLIDE BACKGROUNDS  ← the cross-fade engine
+   All images are stacked (position: absolute).
+   Only .active gets opacity 1.
+   The CSS transition does the fade.
+───────────────────────────────────────── */
+.slide-bg {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  flex: 1;
-  transition: background-image 0.2s ease-in-out;
-  position: relative;
+  opacity: 0;
+  transition: opacity 800ms ease-in-out;
+  will-change: opacity;
 }
 
-.header-contents-left h1,
-.header-contents-left h3,
-.header-contents-left p{
-  color: white;
+.slide-bg.active {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────
+   OVERLAYS
+───────────────────────────────────────── */
+/* Left: deep gradient so white text is always readable */
+.left-overlay {
   position: absolute;
-  left: 3vw;
-  animation: fadeIn 1.5s;
-  font-weight: 350;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.50) 55%,
+    rgba(0, 0, 0, 0.10) 100%
+  );
+  z-index: 1;
 }
 
-.header-contents-left h1 {
-  bottom: 28%;
+/* Right: subtle vignette */
+.right-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to left,
+    rgba(0,0,0,0.25) 0%,
+    transparent 60%
+  );
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────
+   TEXT CONTENT
+───────────────────────────────────────── */
+.header-text {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 3vw 4% 3vw;
+  gap: 0;
+}
+
+/* Sport tag badge */
+.sport-tag {
+  display: inline-block;
+  font-size: clamp(9px, 1vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+  width: fit-content;
+  animation: slideUp 0.5s ease both;
+}
+
+.header-text h1 {
+  color: #fff;
+  font-size: clamp(15px, 2.2vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 8px 0;
+  max-width: 90%;
+  animation: slideUp 0.5s 0.08s ease both;
+}
+
+.header-text h3 {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(11px, 1.2vw, 19px);
   font-weight: 500;
+  margin: 0 0 10px 0;
+  animation: slideUp 0.5s 0.16s ease both;
 }
 
-.header-contents-left h3 {
-  bottom: 20%;
-  font-weight: 500;
+.header-text p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: clamp(9px, 0.9vw, 14px);
+  line-height: 1.55;
+  margin: 0 0 16px 0;
+  max-width: 85%;
+  animation: slideUp 0.5s 0.22s ease both;
 }
 
-.header-contents-left p {
-  bottom: 7%;
-  font-size: 90%;
+/* ─────────────────────────────────────────
+   DOT INDICATORS
+───────────────────────────────────────── */
+.dots {
+  display: flex;
+  gap: 7px;
+  animation: slideUp 0.5s 0.28s ease both;
 }
 
-@media (min-width: 1800px){
-  .header-card{
-    height: 36vw;
-  }
-  .header{
-    padding-top: 20px;
-  }
-  .header-contents-left{
-    max-width: 55%;
-  }
-  .header-contents-right{
-    max-width: 55%;
-  }
-  .header-contents-left h1{
-    bottom: 30%;
-    font-size: 45px;
-  }
-  .header-contents-left h3{
-    bottom: 23%;
-    font-size: 30px;
-  }
-  .header-contents-left p{
-    bottom: 8%;
-    font-size: 20px;
-  }
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 0;
+  transition: background 300ms, transform 300ms, width 300ms;
 }
 
-@media (max-width: 1150px){
-  .header-card{
-    height: 38vw;
+.dot-active {
+  background: #ffffff;
+  width: 22px;
+  border-radius: 100px;
+  transform: none;
+}
+
+/* ─────────────────────────────────────────
+   ANIMATION
+───────────────────────────────────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
   }
-  .header{
-    padding-top: 0px;
-  }
-  .header-contents-left{
-    max-width: 55%;
-  }
-  .header-contents-right{
-    max-width: 55%;
-  }
-  .header-contents-left h1{
-    bottom: 28%;
-    font-size: 25px;
-  }
-  .header-contents-left h3{
-    bottom: 20%;
-    font-size: 15px;
-  }
-  .header-contents-left p{
-    font-size: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 850px){
-  .header-card{
-    height: 38vw;
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 850px) {
+  .header {
+    height: 48vw;
   }
-  .header{
-    padding-top: 30px;
+  .panel-right {
+    flex: 0.7;
   }
-  .header-contents-left{
-    max-width: 55%;
-  }
-  .header-contents-right{
-    max-width: 55%;
-  }
-  .header-contents-left h1{
-    bottom: 24%;
-    font-size: 25px;
-  }
-  .header-contents-left h3{
-    bottom: 4%;
-    font-size: 15px;
-  }
-  .header-contents-left p{
+  .header-text p {
     display: none;
+  }
+  .header-text h1 {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+  }
+  .panel-left  { height: 56vw; flex: none; }
+  .panel-right { display: none; }
+}
+
+@media (min-width: 1600px) {
+  .header {
+    max-height: 620px;
   }
 }

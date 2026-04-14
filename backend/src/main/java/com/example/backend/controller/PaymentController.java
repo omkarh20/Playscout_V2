@@ -60,15 +60,8 @@ public class PaymentController {
                 BookingRequest bookingRequest = new BookingRequest();
                 bookingRequest.setUserId(metadata.get("userId"));
                 bookingRequest.setVenueId(metadata.get("venueId"));
-                bookingRequest.setCourtName(metadata.get("courtName"));
-                bookingRequest.setCourtLocation(metadata.get("courtLocation"));
-                bookingRequest.setSport(metadata.get("sport"));
-                bookingRequest.setCourtImage(metadata.get("courtImage"));
-                bookingRequest.setPrice(parseInt(metadata.get("price"), 0));
                 bookingRequest.setBookingDate(metadata.get("bookingDate"));
                 bookingRequest.setBookingSlot(metadata.get("bookingSlot"));
-                bookingRequest.setMembersJoined(parseInt(metadata.get("membersJoined"), 1));
-                bookingRequest.setTotalMembers(parseInt(metadata.get("totalMembers"), 1));
                 bookingRequest.setOrderId(metadata.get("orderId"));
                 bookingRequest.setPaymentIntentId(session.getPaymentIntent());
                 bookingService.confirmOrCreateBooking(bookingRequest);
@@ -169,17 +162,6 @@ public class PaymentController {
     private boolean isPaidStatus(String status) {
         String normalized = status.toLowerCase(Locale.ROOT);
         return normalized.equals("paid") || normalized.equals("succeeded") || normalized.equals("complete");
-    }
-
-    private int parseInt(String raw, int fallback) {
-        if (raw == null || raw.isBlank()) {
-            return fallback;
-        }
-        try {
-            return Integer.parseInt(raw.trim());
-        } catch (NumberFormatException ex) {
-            return fallback;
-        }
     }
 
     private UUID resolveUserId(String rawValue) {

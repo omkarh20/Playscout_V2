@@ -23,6 +23,16 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
   ];
 
   const handleConfirmBooking = async () => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token || !userId) {
+      toast.error('Please log in to make a booking');
+      setShowBooking(false);
+      return;
+    }
+
     if (!selectedDate || !selectedSlot) {
       alert('Please select both a date and a time slot before confirming the booking.');
       return;
@@ -30,18 +40,11 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
 
     const formattedDate = format(selectedDate, 'dd-MM-yyyy');
     const paymentBody = {
-      amount: price * 100,
       currency: 'inr',
       venueId: venueId,
-      userId: localStorage.getItem('userId') || '',
-      courtName,
-      courtLocation,
-      courtImage,
-      sport,
+      userId: userId,
       bookingDate: formattedDate,
-      bookingSlot: selectedSlot,
-      membersJoined: 1,
-      totalMembers: 1
+      bookingSlot: selectedSlot
     };
 
     try {
@@ -64,15 +67,8 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
         const bookingData = {
           userId: localStorage.getItem('userId') || '',
           venueId: venueId,
-          courtName,
-          courtLocation,
-          sport,
-          courtImage,
-          price,
           bookingDate: formattedDate,
-          bookingSlot: selectedSlot,
-          membersJoined: 1,
-          totalMembers: 1
+          bookingSlot: selectedSlot
         };
 
         const fallbackResponse = await axios.post(`${url}/api/bookings/add-booking`, bookingData, {

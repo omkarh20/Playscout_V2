@@ -26,6 +26,16 @@ const CreateGame = ({ setShowCreateGame, courtDetails }) => {
   ];
 
   const handleCreateGame = async () => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token || !userId) {
+      toast.error('Please log in to create a game');
+      setShowCreateGame(false);
+      return;
+    }
+
     if (selectedDate && selectedSlot && totalMembers && availableMembers) {
       const gameData = {
         venueId: venueId,

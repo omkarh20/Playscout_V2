@@ -5,9 +5,11 @@ import com.example.backend.dto.PaymentCheckoutRequest;
 import com.example.backend.dto.PaymentCheckoutResponse;
 import com.example.backend.enums.PaymentStatus;
 import com.example.backend.model.PaymentRecord;
+import com.example.backend.model.Venue;
 import com.example.backend.repository.BookingRepository;
 import com.example.backend.repository.PaymentRecordRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.VenueRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Refund;
@@ -15,12 +17,11 @@ import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.RefundCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
-import org.springframework.beans.factory.annotation.Value;
 import java.util.List;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 public class PaymentService {
@@ -29,6 +30,7 @@ public class PaymentService {
     private final PaymentRecordRepository paymentRecordRepository;
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final VenueRepository venueRepository;
 
     @Value("${stripe.secretKey}")
     private String secretKey;
@@ -40,18 +42,30 @@ public class PaymentService {
         BookingService bookingService,
         PaymentRecordRepository paymentRecordRepository,
         BookingRepository bookingRepository,
-        UserRepository userRepository
+        UserRepository userRepository,
+        VenueRepository venueRepository
     ) {
         this.bookingService = bookingService;
         this.paymentRecordRepository = paymentRecordRepository;
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
+        this.venueRepository = venueRepository;
     }
 
     public PaymentCheckoutResponse createCheckoutSession(PaymentCheckoutRequest request) throws StripeException {
         Stripe.apiKey = secretKey;
 
-        validateMinimumAmount(request.getCurrency(), request.getAmount());
+        UUID resolvedVenueId = resolveVenueId(request.getVenueId());
+        UUID resolvedUserId = resolveUserId(request.getUserId());
+        if (resolvedVenueId == null || resolvedUserId == null) {
+            throw new IllegalArgumentException("Invalid user or venue id");
+        }
+
+        Venue venue = venueRepository.findById(resolvedVenueId)
+            .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+        Long amount = normalizeVenueAmount(venue.getPrice());
+        validateMinimumAmount(request.getCurrency(), amount);
+        
 
         String orderId = request.getOrderId() == null || request.getOrderId().isBlank()
             ? UUID.randomUUID().toString()
@@ -85,7 +99,7 @@ public class PaymentService {
                     .setPriceData(
                         SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(request.getCurrency())
-                            .setUnitAmount(request.getAmount())
+                            .setUnitAmount(amount)
                             .setProductData(
                                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                     .setName("Venue Booking: " + request.getVenueId())
@@ -98,15 +112,8 @@ public class PaymentService {
             .putMetadata("orderId", orderId)
             .putMetadata("venueId", request.getVenueId())
             .putMetadata("userId", request.getUserId())
-            .putMetadata("courtName", request.getCourtName())
-            .putMetadata("courtLocation", request.getCourtLocation())
-            .putMetadata("sport", request.getSport())
-            .putMetadata("courtImage", request.getCourtImage())
-            .putMetadata("price", String.valueOf(request.getAmount() / 100))
             .putMetadata("bookingDate", request.getBookingDate())
             .putMetadata("bookingSlot", request.getBookingSlot())
-            .putMetadata("membersJoined", String.valueOf(request.getMembersJoined()))
-            .putMetadata("totalMembers", String.valueOf(request.getTotalMembers()))
             .build();
 
         RequestOptions options = RequestOptions.builder()
@@ -115,43 +122,30 @@ public class PaymentService {
 
         Session session = Session.create(params, options);
 
-        UUID resolvedVenueId = resolveVenueId(request.getVenueId());
-        UUID resolvedUserId = resolveUserId(request.getUserId());
-        if (resolvedVenueId == null || resolvedUserId == null) {
-            throw new IllegalArgumentException("Invalid user or venue id");
-        }
-
         PaymentRecord record = new PaymentRecord();
         record.setOrderId(orderId);
         record.setCheckoutSessionId(session.getId());
         record.setPaymentIntentId(session.getPaymentIntent());
-        record.setAmount(request.getAmount());
+        record.setAmount(amount);
         record.setCurrency(request.getCurrency());
         record.setVenueId(resolvedVenueId);
         record.setUserId(resolvedUserId);
-        record.setCourtName(request.getCourtName());
-        record.setCourtLocation(request.getCourtLocation());
-        record.setCourtImage(request.getCourtImage());
-        record.setSport(request.getSport());
+        record.setCourtName(venue.getCourtName());
+        record.setCourtLocation(venue.getCourtLocation());
+        record.setCourtImage(venue.getCourtImage());
+        record.setSport(venue.getSport());
         record.setBookingDate(request.getBookingDate());
         record.setBookingSlot(request.getBookingSlot());
-        record.setMembersJoined(request.getMembersJoined());
-        record.setTotalMembers(request.getTotalMembers());
+        record.setMembersJoined(1);
+        record.setTotalMembers(1);
         record.setStatus(PaymentStatus.PENDING);
         paymentRecordRepository.save(record);
 
         BookingRequest bookingRequest = new BookingRequest();
         bookingRequest.setUserId(request.getUserId());
         bookingRequest.setVenueId(request.getVenueId());
-        bookingRequest.setCourtName(request.getCourtName());
-        bookingRequest.setCourtLocation(request.getCourtLocation());
-        bookingRequest.setSport(request.getSport());
-        bookingRequest.setCourtImage(request.getCourtImage());
-        bookingRequest.setPrice(request.getAmount().intValue());
         bookingRequest.setBookingDate(request.getBookingDate());
         bookingRequest.setBookingSlot(request.getBookingSlot());
-        bookingRequest.setMembersJoined(request.getMembersJoined());
-        bookingRequest.setTotalMembers(request.getTotalMembers());
         bookingRequest.setOrderId(orderId);
         bookingRequest.setPaymentIntentId(session.getPaymentIntent());
         bookingService.createPendingBooking(bookingRequest);
@@ -167,7 +161,9 @@ public class PaymentService {
         throws StripeException {
         Stripe.apiKey = secretKey;
 
-        Long amount = normalizeBookingAmount(booking.getPrice());
+        Venue venue = venueRepository.findById(booking.getVenueId())
+            .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+        Long amount = normalizeVenueAmount(venue.getPrice());
         validateMinimumAmount("inr", amount);
 
         String orderId = booking.getOrderId();
@@ -211,15 +207,8 @@ public class PaymentService {
             .putMetadata("orderId", orderId)
             .putMetadata("venueId", String.valueOf(booking.getVenueId()))
             .putMetadata("userId", String.valueOf(booking.getUserId()))
-            .putMetadata("courtName", booking.getCourtName())
-            .putMetadata("courtLocation", booking.getCourtLocation())
-            .putMetadata("sport", booking.getSport())
-            .putMetadata("courtImage", booking.getCourtImage())
-            .putMetadata("price", String.valueOf(amount / 100))
             .putMetadata("bookingDate", booking.getBookingDate())
             .putMetadata("bookingSlot", booking.getBookingSlot())
-            .putMetadata("membersJoined", String.valueOf(booking.getMembersJoined()))
-            .putMetadata("totalMembers", String.valueOf(booking.getTotalMembers()))
             .build();
 
         RequestOptions options = RequestOptions.builder()
@@ -236,14 +225,14 @@ public class PaymentService {
         record.setCurrency("inr");
         record.setVenueId(booking.getVenueId());
         record.setUserId(booking.getUserId());
-        record.setCourtName(booking.getCourtName());
-        record.setCourtLocation(booking.getCourtLocation());
-        record.setCourtImage(booking.getCourtImage());
-        record.setSport(booking.getSport());
+        record.setCourtName(venue.getCourtName());
+        record.setCourtLocation(venue.getCourtLocation());
+        record.setCourtImage(venue.getCourtImage());
+        record.setSport(venue.getSport());
         record.setBookingDate(booking.getBookingDate());
         record.setBookingSlot(booking.getBookingSlot());
-        record.setMembersJoined(booking.getMembersJoined());
-        record.setTotalMembers(booking.getTotalMembers());
+        record.setMembersJoined(1);
+        record.setTotalMembers(1);
         record.setStatus(PaymentStatus.PENDING);
         paymentRecordRepository.save(record);
 
@@ -326,7 +315,7 @@ public class PaymentService {
         }
     }
 
-    private Long normalizeBookingAmount(Integer price) {
+    private Long normalizeVenueAmount(Integer price) {
         if (price == null) {
             return 0L;
         }
@@ -344,7 +333,7 @@ public class PaymentService {
         long minUnitAmount = "inr".equals(normalized) ? 5000L : 50L;
         if (amount < minUnitAmount) {
             String minDisplay = "inr".equals(normalized)
-                ? "₹50.00"
+                ? "Rs 50.00"
                 : "0.50 " + currency.toUpperCase();
             throw new IllegalArgumentException("Amount too small. Stripe minimum is " + minDisplay + ".");
         }

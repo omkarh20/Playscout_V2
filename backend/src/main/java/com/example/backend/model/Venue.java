@@ -51,37 +51,4 @@ public class Venue {
 
     @Column(name = "disabled", nullable = false)
     private Boolean disabled = false;
-
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
-
-    public String getCourtName() { return courtName; }
-    public void setCourtName(String courtName) { this.courtName = courtName; }
-
-    public String getSport() { return sport; }
-    public void setSport(String sport) { this.sport = sport; }
-
-    public String getCourtLocation() { return courtLocation; }
-    public void setCourtLocation(String courtLocation) { this.courtLocation = courtLocation; }
-
-    public Integer getCourtsAvailable() { return courtsAvailable; }
-    public void setCourtsAvailable(Integer courtsAvailable) { this.courtsAvailable = courtsAvailable; }
-
-    public Integer getPrice() { return price; }
-    public void setPrice(Integer price) { this.price = price; }
-
-    public String getCourtImage() { return courtImage; }
-    public void setCourtImage(String courtImage) { this.courtImage = courtImage; }
-
-    public String getGameIcon() { return gameIcon; }
-    public void setGameIcon(String gameIcon) { this.gameIcon = gameIcon; }
-
-    public BigDecimal getRating() { return rating; }
-    public void setRating(BigDecimal rating) { this.rating = rating; }
-
-    public UUID getCreatedBy() { return createdBy; }
-    public void setCreatedBy(UUID createdBy) { this.createdBy = createdBy; }
-
-    public Boolean getDisabled() { return disabled; }
-    public void setDisabled(Boolean disabled) { this.disabled = disabled; }
 }
