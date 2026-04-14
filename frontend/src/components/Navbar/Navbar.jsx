@@ -60,8 +60,8 @@ const Navbar = ({setShowLogin}) => {
             <ul className='navbar-profile-dropdown'>
               <Link to='/profile'><li><User style={{ color: 'red', paddingBottom: '10px', paddingRight: '6px'}} size={26} /><p style={{ paddingRight: '10px'}}>Profile</p></li></Link>
               <hr />
-              {!isFacilityManager && <Link to='/upcoming'><li><ClipboardPen style={{ color: 'red', paddingBottom: '10px', paddingRight: '6px'}} size={26} /><p style={{ paddingRight: '10px'}}>Upcoming</p></li></Link>}
-              {!isFacilityManager && <hr />}
+              {!isFacilityManager && !isAdmin && <Link to='/upcoming'><li><ClipboardPen style={{ color: 'red', paddingBottom: '10px', paddingRight: '6px'}} size={26} /><p style={{ paddingRight: '10px'}}>Upcoming</p></li></Link>}
+              {!isFacilityManager && !isAdmin && <hr />}
               {!isFacilityManager && !isAdmin && (
                 <>
                   <Link to='/payment-history'>

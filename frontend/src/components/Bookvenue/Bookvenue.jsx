@@ -4,11 +4,12 @@ import Bookpop from '../Bookpop/Bookpop';
 import CreateGame from '../CreateGame/CreateGame';
 import { StoreContext } from '../../context/storeContextInstance';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Bookvenue = ({ id, className, courtName, courtLocation, courtsAvailable, price, courtImage, game_icon, sport }) => {
   const [showBooking, setShowBooking] = useState(false);
   const [showCreateGame, setShowCreateGame] = useState(false);
-  const { getImageUrl } = useContext(StoreContext);
+  const { getImageUrl, role } = useContext(StoreContext);
 
   if (!courtName || !courtLocation || !courtImage || courtsAvailable <= 0 || price === undefined) {
     return null; 
@@ -26,11 +27,19 @@ const Bookvenue = ({ id, className, courtName, courtLocation, courtsAvailable, p
 
   const handleBookClick = (event) => {
     event.stopPropagation();
+    if (role !== 'PLAYER') {
+      toast.error('Access denied');
+      return;
+    }
     setShowBooking(true);
   };
 
   const handleCreateClick = (event) => {
     event.stopPropagation();
+    if (role !== 'PLAYER') {
+      toast.error('Access denied');
+      return;
+    }
     setShowCreateGame(true);
   };
 

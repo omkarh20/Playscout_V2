@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +27,7 @@ public class BookingController {
     }
 
     @PostMapping("/add-booking")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<Map<String, Object>> addBooking(
         Authentication authentication,
         @Valid @RequestBody BookingRequest request
@@ -55,6 +57,7 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<Map<String, Object>> updateBookingStatus(
         Authentication authentication,
         @RequestBody Map<String, String> body,
@@ -68,6 +71,7 @@ public class BookingController {
     }
 
     @PostMapping("/cancel-booking")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<Map<String, Object>> cancelBooking(
         Authentication authentication,
         @RequestBody Map<String, String> body

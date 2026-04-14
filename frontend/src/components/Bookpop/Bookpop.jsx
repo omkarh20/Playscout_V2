@@ -12,7 +12,7 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
   const { venueId, courtName, courtLocation, price, game_icon, sport, courtImage } = courtDetails;
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const { url, getImageUrl } = useContext(StoreContext);
+  const { url, getImageUrl, role } = useContext(StoreContext);
   const token = localStorage.getItem('token');
 
   const today = new Date();
@@ -29,6 +29,13 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
     
     if (!token || !userId) {
       toast.error('Please log in to make a booking');
+      setShowBooking(false);
+      return;
+    }
+
+    // Check if user is a player
+    if (role !== 'PLAYER') {
+      toast.error('Access denied');
       setShowBooking(false);
       return;
     }

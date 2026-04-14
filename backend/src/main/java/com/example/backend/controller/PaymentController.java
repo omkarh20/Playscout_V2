@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,6 +46,7 @@ public class PaymentController {
     }
 
     @PostMapping("/checkout-session")
+    @PreAuthorize("hasRole('PLAYER')")
     public PaymentCheckoutResponse createCheckoutSession(@Valid @RequestBody PaymentCheckoutRequest request)
         throws StripeException {
         return paymentService.createCheckoutSession(request);
@@ -80,6 +82,7 @@ public class PaymentController {
     }
 
     @PostMapping("/checkout-session/booking/{bookingId}")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<?> createCheckoutSessionForBooking(
         @PathVariable UUID bookingId,
         Authentication authentication
@@ -126,6 +129,7 @@ public class PaymentController {
     }
 
     @GetMapping("/history")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<?> getPaymentHistory(Authentication authentication) {
         if (authentication == null) {
             return ResponseEntity.status(401).body(Map.of(

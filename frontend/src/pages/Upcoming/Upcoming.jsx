@@ -18,6 +18,7 @@ const Upcoming = () => {
     fetchGameList,
     fetchVenueList,
     token,
+    role,
     getImageUrl,
     incomingJoinRequests,
     sentJoinRequests,
@@ -277,6 +278,15 @@ const Upcoming = () => {
       <div className='upcoming-container'>
         <h2>Upcoming</h2>
         <p className='no-data-message'>Login to see your bookings, planned games, and requests.</p>
+      </div>
+    );
+  }
+
+  if (role === 'FACILITY_MANAGER' || role === 'ADMIN') {
+    return (
+      <div className='upcoming-container'>
+        <h2>Upcoming</h2>
+        <p className='no-data-message'>Access denied</p>
       </div>
     );
   }
