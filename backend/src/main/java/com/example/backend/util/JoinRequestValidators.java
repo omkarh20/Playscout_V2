@@ -3,10 +3,6 @@ package com.example.backend.util;
 import com.example.backend.model.Game;
 import com.example.backend.model.User;
 
-/**
- * Chain of Responsibility pattern for validating join requests.
- * Each validator encapsulates a single validation rule and can delegate to the next validator in the chain.
- */
 public abstract class JoinRequestValidators {
 
     protected JoinRequestValidators next;
@@ -26,9 +22,6 @@ public abstract class JoinRequestValidators {
 
     protected abstract void doValidate(User user, Game game, boolean pendingExists, boolean acceptedExists);
 
-    /**
-     * Validator: Check if game has available slots
-     */
     public static class GameNotFullValidator extends JoinRequestValidators {
         @Override
         protected void doValidate(User user, Game game, boolean pendingExists, boolean acceptedExists) {
@@ -38,9 +31,6 @@ public abstract class JoinRequestValidators {
         }
     }
 
-    /**
-     * Validator: Prevent game creator from joining their own game
-     */
     public static class SenderNotCreatorValidator extends JoinRequestValidators {
         @Override
         protected void doValidate(User user, Game game, boolean pendingExists, boolean acceptedExists) {
@@ -50,9 +40,6 @@ public abstract class JoinRequestValidators {
         }
     }
 
-    /**
-     * Validator: Prevent duplicate pending join requests
-     */
     public static class NoPendingRequestValidator extends JoinRequestValidators {
         @Override
         protected void doValidate(User user, Game game, boolean pendingExists, boolean acceptedExists) {
@@ -62,9 +49,6 @@ public abstract class JoinRequestValidators {
         }
     }
 
-    /**
-     * Validator: Prevent re-joining if already accepted
-     */
     public static class NotAlreadyAcceptedValidator extends JoinRequestValidators {
         @Override
         protected void doValidate(User user, Game game, boolean pendingExists, boolean acceptedExists) {
