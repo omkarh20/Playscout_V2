@@ -23,6 +23,7 @@ public class NewsApiAdapter implements NewsSourceAdapter {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<Map<String, String>> fetchSportsArticles() {
         String gNewsApiKey = resolveApiKey();
         if (gNewsApiKey.isBlank()) {
