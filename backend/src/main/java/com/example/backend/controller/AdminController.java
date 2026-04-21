@@ -6,7 +6,7 @@ import com.example.backend.dto.AdminPaymentResponse;
 import com.example.backend.dto.AdminRefundRequestResponse;
 import com.example.backend.dto.AdminUserResponse;
 import com.example.backend.dto.AdminVenueResponse;
-import com.example.backend.service.AdminService;
+import com.example.backend.facade.AdminFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,11 +21,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final AdminService adminService;
+    private final AdminFacade adminFacade;
 
     @GetMapping("/dashboard")
     public ResponseEntity<Map<String, Object>> getDashboard() {
-        AdminDashboardResponse stats = adminService.getDashboard();
+        AdminDashboardResponse stats = adminFacade.getDashboard();
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", stats
@@ -34,7 +34,7 @@ public class AdminController {
 
     @GetMapping("/users")
     public ResponseEntity<Map<String, Object>> getAllUsers() {
-        List<AdminUserResponse> users = adminService.getAllUsers();
+        List<AdminUserResponse> users = adminFacade.getAllUsers();
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", users
@@ -43,7 +43,7 @@ public class AdminController {
 
     @GetMapping("/venues")
     public ResponseEntity<Map<String, Object>> getAllVenues() {
-        List<AdminVenueResponse> venues = adminService.getAllVenues();
+        List<AdminVenueResponse> venues = adminFacade.getAllVenues();
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", venues
@@ -53,7 +53,7 @@ public class AdminController {
     @GetMapping("/games")
     public ResponseEntity<Map<String, Object>> getRecentGames(
             @RequestParam(defaultValue = "20") int limit) {
-        List<AdminGameResponse> games = adminService.getRecentGames(limit);
+        List<AdminGameResponse> games = adminFacade.getRecentGames(limit);
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", games
@@ -62,7 +62,7 @@ public class AdminController {
 
     @GetMapping("/payments")
     public ResponseEntity<Map<String, Object>> getAllPayments() {
-        List<AdminPaymentResponse> payments = adminService.getAllPayments();
+        List<AdminPaymentResponse> payments = adminFacade.getAllPayments();
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", payments
@@ -72,7 +72,7 @@ public class AdminController {
     @PatchMapping("/users/{userId}/suspend")
     public ResponseEntity<Map<String, Object>> suspendUser(@PathVariable UUID userId) {
         try {
-            adminService.suspendUser(userId);
+            adminFacade.suspendUser(userId);
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "User suspension status updated"
@@ -88,7 +88,7 @@ public class AdminController {
     @PatchMapping("/venues/{venueId}/disable")
     public ResponseEntity<Map<String, Object>> disableVenue(@PathVariable UUID venueId) {
         try {
-            adminService.disableVenue(venueId);
+            adminFacade.disableVenue(venueId);
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Venue status updated"
@@ -104,7 +104,7 @@ public class AdminController {
     @PatchMapping("/games/{gameId}/cancel")
     public ResponseEntity<Map<String, Object>> cancelGame(@PathVariable UUID gameId) {
         try {
-            adminService.cancelGame(gameId);
+            adminFacade.cancelGame(gameId);
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Game cancelled successfully"
@@ -119,7 +119,7 @@ public class AdminController {
 
     @GetMapping("/refunds")
     public ResponseEntity<Map<String, Object>> getRefundRequests() {
-        List<AdminRefundRequestResponse> refunds = adminService.getRefundRequests();
+        List<AdminRefundRequestResponse> refunds = adminFacade.getRefundRequests();
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", refunds
@@ -129,7 +129,7 @@ public class AdminController {
     @PatchMapping("/bookings/{bookingId}/refund")
     public ResponseEntity<Map<String, Object>> refundBooking(@PathVariable UUID bookingId) {
         try {
-            adminService.processRefund(bookingId);
+            adminFacade.processRefund(bookingId);
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Refund processed"
