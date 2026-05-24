@@ -29,7 +29,7 @@ const PaymentHistory = () => {
 
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(`${url}/api/payments/history`, {
+        const response = await axios.get(`${url}/payments/history`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPayments(response?.data?.data || []);

@@ -26,7 +26,7 @@ import com.example.backend.service.JoinRequestService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/join-requests")
+@RequestMapping("/join-requests")
 @RequiredArgsConstructor
 public class JoinRequestController {
     

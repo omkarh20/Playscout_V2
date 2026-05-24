@@ -49,7 +49,7 @@ const StoreContextProvider = (props) => {
         }
 
         try {
-            const response = await axios.get(url + "/api/games");
+            const response = await axios.get(url + "/games");
             const data = response?.data?.data || [];
             setPlayerList(data);
             setGameLastFetchedAt(Date.now());
@@ -66,7 +66,7 @@ const StoreContextProvider = (props) => {
         }
 
         try {
-            const response = await axios.get(url + "/api/venues");
+            const response = await axios.get(url + "/venues");
             const data = response?.data?.data || [];
             setCourtList(data);
             setVenueLastFetchedAt(Date.now());
@@ -88,7 +88,7 @@ const StoreContextProvider = (props) => {
         }
 
         try {
-            const endpoint = status ? `${url}/api/join-requests/incoming?status=${status}` : `${url}/api/join-requests/incoming`;
+            const endpoint = status ? `${url}/join-requests/incoming?status=${status}` : `${url}/join-requests/incoming`;
             const response = await axios.get(endpoint, buildAuthHeaders());
             const data = response?.data?.data || [];
             setIncomingJoinRequests(data);
@@ -107,7 +107,7 @@ const StoreContextProvider = (props) => {
         }
 
         try {
-            const response = await axios.get(`${url}/api/join-requests/sent`, buildAuthHeaders());
+            const response = await axios.get(`${url}/join-requests/sent`, buildAuthHeaders());
             const data = response?.data?.data || [];
             setSentJoinRequests(data);
             return data;
@@ -119,15 +119,15 @@ const StoreContextProvider = (props) => {
     };
 
     const acceptJoinRequest = async (requestId) => {
-        return axios.patch(`${url}/api/join-requests/${requestId}/accept`, {}, buildAuthHeaders());
+        return axios.patch(`${url}/join-requests/${requestId}/accept`, {}, buildAuthHeaders());
     };
 
     const rejectJoinRequest = async (requestId) => {
-        return axios.patch(`${url}/api/join-requests/${requestId}/reject`, {}, buildAuthHeaders());
+        return axios.patch(`${url}/join-requests/${requestId}/reject`, {}, buildAuthHeaders());
     };
 
     const cancelSentJoinRequest = async (requestId) => {
-        return axios.delete(`${url}/api/join-requests/${requestId}`, buildAuthHeaders());
+        return axios.delete(`${url}/join-requests/${requestId}`, buildAuthHeaders());
     };
 
     const getImageUrl = (path) => {

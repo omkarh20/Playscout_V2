@@ -52,16 +52,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
-                        .requestMatchers("/api/venues").permitAll()
-                        .requestMatchers("/api/games").permitAll()
-                        .requestMatchers("/api/news").permitAll()
-                        .requestMatchers("/api/payments/**").permitAll()
+                        .requestMatchers("/venues").permitAll()
+                        .requestMatchers("/games").permitAll()
+                        .requestMatchers("/news").permitAll()
+                        .requestMatchers("/payments/**").permitAll()
                         .requestMatchers("/webhooks/stripe").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/facility-manager/**").hasRole("FACILITY_MANAGER")
-                        .requestMatchers("/api/player/**").hasRole("PLAYER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/facility-manager/**").hasRole("FACILITY_MANAGER")
+                        .requestMatchers("/player/**").hasRole("PLAYER")
                 .anyRequest().authenticated());
 
         if (oauthEnabled) {

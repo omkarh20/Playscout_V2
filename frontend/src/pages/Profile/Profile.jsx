@@ -30,7 +30,7 @@ const Profile = () => {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${url}/api/user/me`, {
+        const response = await axios.get(`${url}/user/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -76,7 +76,7 @@ const Profile = () => {
         payload.password = formData.password.trim();
       }
 
-      const response = await axios.put(`${url}/api/user/me`, payload, {
+      const response = await axios.put(`${url}/user/me`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

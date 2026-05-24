@@ -26,7 +26,7 @@ const CompleteProfile = () => {
     setSaving(true);
 
     try {
-      const response = await axios.post(`${url}/api/auth/oauth-register`, {
+      const response = await axios.post(`${url}/auth/oauth-register`, {
         name,
         email,
         password,

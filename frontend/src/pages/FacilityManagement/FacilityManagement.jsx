@@ -26,7 +26,7 @@ const FacilityManagement = () => {
     }
 
     try {
-      const response = await axios.get(`${url}/api/venues/mine`, {
+      const response = await axios.get(`${url}/venues/mine`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setVenues(response?.data?.data || []);
@@ -112,7 +112,7 @@ const FacilityManagement = () => {
     formData.append('court-image', venueData.courtImage);
 
     try {
-      const response = await axios.post(`${url}/api/venues`, formData, {
+      const response = await axios.post(`${url}/venues`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -154,7 +154,7 @@ const FacilityManagement = () => {
 
     try {
       const response = await axios.delete(
-        `${url}/api/venues/${venueID}`,
+        `${url}/venues/${venueID}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

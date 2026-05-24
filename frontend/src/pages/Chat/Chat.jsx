@@ -47,7 +47,7 @@ const Chat = () => {
     const fetchInitialData = async () => {
       if (!token || !canAccessChat) return;
       try {
-        const res = await axios.get(`${url}/api/messages`, {
+        const res = await axios.get(`${url}/messages`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const allMessages = res.data.data;
@@ -165,7 +165,7 @@ const Chat = () => {
           body: JSON.stringify(payload)
         });
       } else {
-        const res = await axios.post(`${url}/api/messages`, payload, {
+        const res = await axios.post(`${url}/messages`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res?.data?.data) {

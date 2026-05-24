@@ -9,7 +9,7 @@ const News = () => {
 
   useEffect(() => {
     axios
-      .get(`${url}/api/news`)
+      .get(`${url}/news`)
       .then((response) => {
         setNewsArticles(response.data.articles);
       })

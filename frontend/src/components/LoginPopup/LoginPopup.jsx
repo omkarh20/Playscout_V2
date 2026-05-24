@@ -45,7 +45,7 @@ const LoginPopup = ({ setShowLogin }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const endpoint = mode === 'Login' ? '/api/auth/login' : '/api/auth/register';
+    const endpoint = mode === 'Login' ? '/auth/login' : '/auth/register';
     const selectedAvatar = data.userImage || avatars[0];
 
     const payload =

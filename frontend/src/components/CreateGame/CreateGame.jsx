@@ -47,7 +47,7 @@ const CreateGame = ({ setShowCreateGame, courtDetails }) => {
       };
 
       try {
-        const response = await axios.post(`${url}/api/games`, gameData, {
+        const response = await axios.post(`${url}/games`, gameData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.data.success) {

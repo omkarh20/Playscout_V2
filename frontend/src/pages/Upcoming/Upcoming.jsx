@@ -35,7 +35,7 @@ const Upcoming = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get(`${url}/api/bookings`, {
+      const response = await axios.get(`${url}/bookings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(response?.data?.data || []);
@@ -46,7 +46,7 @@ const Upcoming = () => {
 
   const fetchPlannedGames = async () => {
     try {
-      const response = await axios.get(`${url}/api/games/me`, {
+      const response = await axios.get(`${url}/games/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPlannedGames(response?.data?.data || []);
@@ -61,7 +61,7 @@ const Upcoming = () => {
 
   const removeGame = async (gameID) => {
     try {
-      const response = await axios.delete(`${url}/api/games/${gameID}`, {
+      const response = await axios.delete(`${url}/games/${gameID}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response?.data?.success) {
@@ -79,7 +79,7 @@ const Upcoming = () => {
   const cancelBooking = async (bookId) => {
     try {
       const response = await axios.patch(
-        `${url}/api/bookings/${bookId}`,
+        `${url}/bookings/${bookId}`,
         { status: 'CANCELLED' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -107,7 +107,7 @@ const Upcoming = () => {
     try {
       setPaymentLoadingId(booking.id);
       const response = await axios.post(
-        `${url}/api/payments/checkout-session/booking/${booking.id}`,
+        `${url}/payments/checkout-session/booking/${booking.id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

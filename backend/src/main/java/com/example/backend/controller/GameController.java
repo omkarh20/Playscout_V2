@@ -23,7 +23,7 @@ import com.example.backend.template.GameCreationProcessor;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/games")
 @RequiredArgsConstructor
 public class GameController {
     

@@ -22,7 +22,7 @@ const PaymentSuccess = () => {
     const checkSession = async () => {
       try {
         const response = await axios.get(
-          `${url}/api/payments/checkout-session/${sessionId}`,
+          `${url}/payments/checkout-session/${sessionId}`,
           { headers: authHeader }
         );
         const paymentStatus = response.data?.status || response.data?.session?.payment_status;

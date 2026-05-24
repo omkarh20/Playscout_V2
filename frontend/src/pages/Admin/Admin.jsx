@@ -45,7 +45,7 @@ const Admin = () => {
   // Fetch dashboard stats
   const fetchDashboard = async () => {
     try {
-      const response = await axios.get(`${url}/api/admin/dashboard`, {
+      const response = await axios.get(`${url}/admin/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -61,7 +61,7 @@ const Admin = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/admin/users`, {
+      const response = await axios.get(`${url}/admin/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -79,7 +79,7 @@ const Admin = () => {
   const fetchVenues = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/admin/venues`, {
+      const response = await axios.get(`${url}/admin/venues`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -97,7 +97,7 @@ const Admin = () => {
   const fetchGames = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/admin/games?limit=20`, {
+      const response = await axios.get(`${url}/admin/games?limit=20`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -115,7 +115,7 @@ const Admin = () => {
   const fetchRefunds = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/admin/refunds`, {
+      const response = await axios.get(`${url}/admin/refunds`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -133,7 +133,7 @@ const Admin = () => {
   const fetchPayments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/admin/payments`, {
+      const response = await axios.get(`${url}/admin/payments`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -151,7 +151,7 @@ const Admin = () => {
   const handleSuspendUser = async (userId) => {
     try {
       const response = await axios.patch(
-        `${url}/api/admin/users/${userId}/suspend`,
+        `${url}/admin/users/${userId}/suspend`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -168,7 +168,7 @@ const Admin = () => {
   const handleDisableVenue = async (venueId) => {
     try {
       const response = await axios.patch(
-        `${url}/api/admin/venues/${venueId}/disable`,
+        `${url}/admin/venues/${venueId}/disable`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -188,7 +188,7 @@ const Admin = () => {
     }
     try {
       const response = await axios.patch(
-        `${url}/api/admin/games/${gameId}/cancel`,
+        `${url}/admin/games/${gameId}/cancel`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -207,7 +207,7 @@ const Admin = () => {
     }
     try {
       const response = await axios.patch(
-        `${url}/api/admin/bookings/${bookingId}/refund`,
+        `${url}/admin/bookings/${bookingId}/refund`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

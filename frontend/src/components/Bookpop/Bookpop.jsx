@@ -55,7 +55,7 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
     };
 
     try {
-      const response = await axios.post(`${url}/api/payments/checkout-session`, paymentBody, {
+      const response = await axios.post(`${url}/payments/checkout-session`, paymentBody, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -78,7 +78,7 @@ const Bookpop = ({ setShowBooking, courtDetails }) => {
           bookingSlot: selectedSlot
         };
 
-        const fallbackResponse = await axios.post(`${url}/api/bookings/add-booking`, bookingData, {
+        const fallbackResponse = await axios.post(`${url}/bookings/add-booking`, bookingData, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
