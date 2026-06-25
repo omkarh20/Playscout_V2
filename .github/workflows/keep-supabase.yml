@@ -1,0 +1,15 @@
+name: Keep Supabase Active
+
+on:
+  schedule:
+    - cron: '0 0 */5 * *' # Runs every 5 days at midnight
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping venues endpoint
+        run: |
+          curl -L https://playscout.dev/api/venues
