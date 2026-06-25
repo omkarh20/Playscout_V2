@@ -2,7 +2,23 @@
 
 A full-stack web application that connects sports enthusiasts with venues, enabling them to book facilities, create games, find players, and manage bookings with real-time communication.
 
-**Built with Spring Boot + React | Object-Oriented Analysis & Design Implementation**
+**Built with Spring Boot + React**
+
+---
+
+## Live Demo
+
+🌐 **https://playscout.dev**
+
+> **Note:** The backend uses Supabase's free tier. If the application has been inactive for some time, the database may take a few seconds to resume on the first request.
+
+---
+
+## Project Background
+
+## Project Background
+
+PlayScout was originally developed as a collaborative university project that I contributed to as part of a development team. This repository is my fork of the original project, where I extended it with production-ready deployment, cloud infrastructure, and hosting improvements while preserving the core application features.
 
 ---
 
@@ -10,129 +26,207 @@ A full-stack web application that connects sports enthusiasts with venues, enabl
 
 ![Home Page Screenshot](previews/homepage.png)
 
-The screenshots of the rest of the pages are in the previews folder.
+The screenshots of the remaining pages are available in the `previews` folder.
 
 ---
 
 ## Features
 
-**Venue Management** - Browse sports venues with filters, view detailed information including facilities and images, and admin panel for managing venues.
+* **Venue Management** – Browse sports venues with filters, view detailed information including facilities and images, and manage venues through an admin panel.
+* **Booking System** – Check availability, reserve time slots, manage bookings, cancellations, and refunds.
+* **Game Management** – Create games, set player limits, join existing games, and manage join requests.
+* **Real-Time Chat** – WebSocket-based messaging between game participants with instant updates.
+* **Player Discovery** – Explore player profiles, interests, and connect with nearby players.
+* **Sports News Feed** – Stay updated with the latest sports news using the GNews API.
+* **Payment Integration** – Secure booking payments with payment history and refund tracking.
+* **Authentication & Security** – JWT authentication, OAuth2 login, and Spring Security.
 
-**Booking System** - Check availability, book time slots flexibly, view booking history, and manage cancellations with automatic refund processing.
+---
 
-**Game Management** - Create games at venues with customizable details, set player limits, join existing games, and manage join requests.
+## Production Deployment
 
-**Real-Time Chat** - WebSocket-based messaging between game participants with instant notifications and message history.
+This fork extends the original project with production-ready deployment and infrastructure improvements:
 
-**Player Discovery** - Explore other players in your area, view profiles and interests, and send join requests to games.
-
-**Sports News Feed** - Stay updated with latest sports news integrated from external GNews API.
-
-**Payment Integration** - Secure booking payments with payment history tracking and refund management.
-
-**Authentication & Security** - User registration, JWT-based authentication, OAuth2 social login, and encrypted passwords.
+* Dockerized frontend and backend
+* Docker Compose multi-container deployment
+* nginx reverse proxy
+* Azure Virtual Machine deployment
+* Custom domain (**https://playscout.dev**)
+* HTTPS using Let's Encrypt
+* Production environment configuration
+* Deployment documentation
 
 ---
 
 ## Tech Stack
 
 ### Backend
-- **Framework**: Spring Boot 4.0.5
-- **Language**: Java 25
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Spring Security with JWT
-- **Real-time**: WebSocket with STOMP
+
+* **Framework:** Spring Boot 4.0.5
+* **Language:** Java 25
+* **Database:** Supabase (PostgreSQL)
+* **Authentication:** Spring Security with JWT
+* **Real-time:** WebSocket with STOMP
 
 ### Frontend
-- **Framework**: React 19
-- **Build Tool**: Vite
-- **Styling**: CSS3
-- **HTTP Client**: Axios
-- **Real-time**: SockJS + STOMP Client
+
+* **Framework:** React 19
+* **Build Tool:** Vite
+* **Styling:** CSS3
+* **HTTP Client:** Axios
+* **Real-time:** SockJS + STOMP Client
 
 ### Storage
-- Supabase for database (PostgreSQL) and file storage integration
+
+* Supabase (PostgreSQL + File Storage)
+
+### Deployment
+
+* Docker
+* Docker Compose
+* nginx
+* Azure Virtual Machine
+* Let's Encrypt
+* Name.com
 
 ---
 
-## Object-Oriented Design
+## Deployment Architecture
 
-PlayScout implements core OOPS patterns and principles for clean, maintainable code:
-
-**Design Patterns** - Builder pattern for complex Booking objects, Template pattern for entity creation, Strategy for flexible validation and payment processing, Adapter for DTO conversions, and Command pattern for message handling.
-
-**Core Principles** - Single Responsibility (each service handles one concern), Dependency Inversion (Spring DI throughout), Interface Segregation (separate DTOs for requests/responses), and Low Coupling (frontend and backend communicate through stable DTO contracts).
-
-**Benefits** - Changes to internal models don't ripple to frontend, services are easy to test and extend, and code follows enterprise standards with clear separation between model, service, controller, and DTO layers.
+```text
+                Internet
+                    │
+        https://playscout.dev
+                    │
+              Azure Ubuntu VM
+                    │
+            Docker Compose
+          ┌──────────┴──────────┐
+          │                     │
+Frontend (nginx + React)   Backend (Spring Boot)
+          │                     │
+          └──────────┬──────────┘
+                     │
+          Supabase PostgreSQL
+```
 
 ---
 
 ## Installation & Setup
 
 ### Prerequisites
-- **Java 25** or higher 
-- **Node.js 18+** 
-- **Supabase Account**
-- **Maven 3.8+**
-- **Git**
 
-### Step 1: Clone the Repository
+* Java 25 or higher
+* Node.js 18+
+* Maven 3.8+
+* Git
+* Supabase Account
+
+---
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/omkarh20/Playscout_V2.git
+cd Playscout_V2
+```
+
+---
+
+## Local Development
+
+### 1. Database Setup (Supabase)
+
+1. Create a Supabase project.
+2. Open the SQL Editor.
+3. Execute `database/schema.sql`.
+4. Populate sample data from the `data/` directory if required.
+
+---
+
+### 2. Backend Setup
+
+```bash
+cd backend
+```
+
+Copy `.env.example` to `.env` and configure:
+
+* Database credentials
+* JWT secret
+* OAuth credentials
+* Stripe keys (optional)
+* Other required environment variables
+
+Run the backend:
+
+Windows:
+
+```bash
+.\mvn.cmd spring-boot:run
+```
+
+Linux/macOS:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Backend runs on:
 
 ```
-git clone https://github.com/yourusername/PlayScout-OOAD.git
-cd PlayScout-OOAD
+http://localhost:8080
 ```
 
-### Step 2: Database Setup (Supabase)
+---
 
-1. Create a Supabase account and project at [supabase.com](https://supabase.com)
-2. In your Supabase dashboard, go to SQL Editor and create a new query
-3. Copy the contents from `database/schema.sql` and execute it
-4. Populate sample data from files in the `data/` directory (if needed)
+### 3. Frontend Setup
 
+```bash
+cd frontend
+```
 
-### Step 3: Backend Setup
+Copy `.env.example` to `.env` and configure:
 
-1. **Navigate to Backend Directory**
-   ```
-   cd backend
-   ```
+* Backend URL
+* Supabase Storage URL
+* OAuth configuration
 
-2. **Configure Environment**
-   - Copy `.env.example` to `.env`
-   - Fill in the values:
-     - Database connection details from Supabase (host, user, password)
-     - JWT secret for authentication
-     - Stripe keys (if using payments)
-     - OAuth credentials (if using social login)
-     - Other service endpoints as needed
+Run:
 
-3. **Build and Run**
-   ```
-   .\mvn.cmd clean install
-   .\mvn.cmd spring-boot:run
-   ```
-   
-   The backend will start on `http://localhost:8080`
+```bash
+npm install
+npm run dev
+```
 
-### Step 4: Frontend Setup
+Frontend runs on:
 
-1. **Navigate to Frontend Directory**
-   ```
-   cd frontend
-   ```
+```
+http://localhost:5173
+```
 
-2. **Configure Environment**
-   - Copy `.env.example` to `.env`
-   - Fill in the values:
-     - Backend URL 
-     - Supabase storage URL
-     - OAuth settings
+---
 
-3. **Install and Run**
-   ```
-   npm install
-   npm run dev
-   ```
-   
-   Frontend will be available at `http://localhost:5173/`
+## Docker Deployment
+
+Build the backend:
+
+```bash
+cd backend
+mvn clean package
+cd ..
+```
+
+Start the application:
+
+```bash
+docker compose up --build -d
+```
+
+The application will be available at:
+
+```
+http://localhost
+```
+
+or configure a custom domain for production deployment as demonstrated in this repository.
